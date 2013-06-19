@@ -4,6 +4,7 @@
 {}
 {}
 { "src": "Images/Sun.png", "name": "sun1","hOffset": 250,"vOffset": 250,"alignment": "center"}
+{"body": "Invalid JSON"
 {}
 {}
 { "game_id": "a34904d6-8dbc-11e2-864b-5d361e90beb5"}
@@ -12,3 +13,5 @@
 {}
 {}
 {}
+
+{bad : JSON}
