@@ -185,17 +185,6 @@
           </http>
         </request>
       </transaction>
-
-      <transaction name="get_queue">
-        <request subst="true">
-          <http url='/v1/queues/%%_qname%%' version='1.1' content_type='application/json' method='GET'>
-            <http_header name="User-Agent" value="Tsung-Agent"/>
-            <http_header name="Client-ID" value="Tsung-Client"/>
-            <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
-          </http>
-        </request>
-      </transaction>
     </session>
 
   <!--

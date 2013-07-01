@@ -168,7 +168,7 @@
 
       <transaction name="post_message">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
@@ -202,7 +202,7 @@
       <!--GET on a deleted Queue - Returns 404 -->
       <transaction name="get_queue">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%' version='1.1' content_type='application/json' method='GET'>
+          <http url='/v1/queues/%%_qname%%' version='1.1' content_type='application/json' method='GET'>
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
@@ -385,7 +385,7 @@
 
       <transaction name="post_message">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
@@ -400,7 +400,7 @@
           <dyn_variable name="msgpath" jsonpath="[0].href"/>
           <!--Extract location from response header -->
           <dyn_variable name="location" re="Location: (.*)\r\n"/>
-          <http url='/v1/1/queues/%%_qname%%/claims' version='1.1' contents='%%_claimbody%%' content_type='application/json' method='POST'>
+          <http url='/v1/queues/%%_qname%%/claims' version='1.1' contents='%%_claimbody%%' content_type='application/json' method='POST'>
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
