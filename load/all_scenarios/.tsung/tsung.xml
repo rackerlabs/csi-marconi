@@ -3,12 +3,12 @@
 <tsung loglevel="debug" dumptraffic="true" backend="fullstats" version="1.0">
   <!-- Client side setup -->
   <clients>
-    <client host="tsung-controller" use_controller_vm="true" />
-    <client host="tsung-slave-1" />
+    <client host="tsung-master" use_controller_vm="true"/>
+    <client host="tsung-worker-1"/>
   </clients>
   <!-- Server side setup -->
   <servers>
-    <server host="162.209.67.22" port="80" type="tcp"></server>
+    <server host="preview.queue.api.rackspacecloud.com" port="80" type="tcp"></server>
   </servers>
   <!-- to start os monitoring (cpu, network, memory). Use an erlang
   agent on the remote machine or SNMP. erlang is the default -->
@@ -28,10 +28,12 @@
       <user_agent probability="80">Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.8) Gecko/20050513 Galeon/1.3.21</user_agent>
       <user_agent probability="20">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
     </option>
-    <option name="ports_range" min="1025" max="65535" />
+    <option name="ports_range" min="1025" max="65535"/>
     <option name="file_server" id='metadata' value="/root/.tsung/queuemetadata.csv"></option>
     <option name="file_server" id='message' value="/root/.tsung/msgbody.csv"></option>
     <option name="file_server" id='claimdata' value="/root/.tsung/claimdata.csv"></option>
+    <option name="file_server" id='projectid' value="/root/.tsung/projectid.csv"></option>
+
   </options>
   <!-- start a session for a http user. the probability is the
   frequency of this type os session. The sum of all session's
@@ -47,62 +49,86 @@
   5. Delete Queue-->
     <session name="Scenario-1" probability="20" type="ts_http">
       <setdynvars sourcetype="random_string" length="12">
-        <var name="qname" />
+        <var name="qname"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="metadata" delimiter=";" order="random">
-        <var name="qmetadata" />
+        <var name="qmetadata"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="message" delimiter=";" order="random">
-        <var name="msgbody" />
+        <var name="msgbody"/>
+      <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
+        <var name="%%_pid%%"/>
       </setdynvars>
 
       <!-- full url with server name, this overrides the "server" config value -->
       <transaction name="create_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'></http>
+          <http url="/v1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <transaction name="post_message">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
 
       <transaction name="get_message">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' content_type='application/json' method='GET'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' content_type='application/json' method='GET'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
 
       <transaction name="queue_stats">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/stats' version='1.1' content_type='application/json' method='GET'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url='/v1/queues/%%_qname%%/stats' version='1.1' content_type='application/json' method='GET'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
 
       <transaction name="delete_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="DELETE" version="1.1"></http>
+          <http url="/v1/queues/%%_qname%%" method="DELETE" version="1.1">
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+        </http>
         </request>
       </transaction>
 
       <!--GET on a deleted Queue - Returns 404 -->
       <transaction name="get_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="GET" version="1.1"></http>
+          <http url="/v1/queues/%%_qname%%" method="GET" version="1.1">
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
     </session>
+
 
     <!--
   Scenario-2 :
@@ -114,55 +140,78 @@
   6. Get Queue-->
     <session name="Scenario-2" probability="15" type="ts_http">
       <setdynvars sourcetype="random_string" length="12">
-        <var name="qname" />
+        <var name="qname"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="message" delimiter=";" order="random">
-        <var name="msgbody" />
+        <var name="msgbody"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="metadata" delimiter=";" order="random">
-        <var name="qmetadata" />
+        <var name="qmetadata"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="metadata" delimiter=";" order="random">
-        <var name="qmetadata_updated" />
+        <var name="qmetadata_updated"/>
+      </setdynvars>
+      <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
+        <var name="%%_pid%%"/>
       </setdynvars>
 
       <transaction name="create_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'></http>
+          <http url="/v1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <transaction name="post_message">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
 
       <transaction name="update_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata_updated%%' content_type='application/json'></http>
+          <http url="/v1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata_updated%%' content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <transaction name="delete_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="DELETE" version="1.1"></http>
+          <http url="/v1/queues/%%_qname%%" method="DELETE" version="1.1">
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <!--GET on a deleted Queue - Returns 404 -->
       <transaction name="get_queue">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%' version='1.1' content_type='application/json' method='GET'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url='/v1/queues/%%_qname%%' version='1.1' content_type='application/json' method='GET'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
     </session>
+
 
   <!--
   Scenario-3 :
@@ -176,82 +225,128 @@
   8. Delete Queue-->
     <session name="Scenario-3" probability="30" type="ts_http">
       <setdynvars sourcetype="random_string" length="12">
-        <var name="qname" />
+        <var name="qname"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="message" delimiter=";" order="random">
-        <var name="msgbody" />
+        <var name="msgbody"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="metadata" delimiter=";" order="random">
-        <var name="qmetadata" />
+        <var name="qmetadata"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="claimdata" delimiter=";" order="random">
-        <var name="claimbody" />
+        <var name="claimbody"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="claimdata" delimiter=";" order="random">
-        <var name="claimbody_updated" />
+        <var name="claimbody_updated"/>
       </setdynvars>
+      <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
+        <var name="%%_pid%%"/>
+      </setdynvars>
+
       <transaction name="create_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'></http>
-        </request>
-      </transaction>
-      <transaction name="post_message">
-        <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url="/v1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
+
       <transaction name="post_message">
         <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
+
+      <transaction name="post_message">
+        <request subst="true">
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
+        </request>
+      </transaction>
+
       <transaction name="post_claim">
         <request subst="true">
           <!--Extract href from response body -->
-          <dyn_variable name="msgpath" jsonpath="[0].href" />
+          <dyn_variable name="msgpath" jsonpath="[0].href"/>
           <!--Extract location from response header -->
-          <dyn_variable name="location" re="Location: (.*)\r\n" />
-          <http url='/v1/1/queues/%%_qname%%/claims' version='1.1' contents='%%_claimbody%%' content_type='application/json' method='POST'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <dyn_variable name="location" re="Location: (.*)\r\n"/>
+          <http url='/v1/queues/%%_qname%%/claims' version='1.1' contents='%%_claimbody%%' content_type='application/json' method='POST'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
+
       <transaction name="get_message">
         <request subst="true">
-          <http url="%%_msgpath%%" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="%%_msgpath%%" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
+
       <transaction name="update_claim">
         <request subst="true">
           <http url='%%_location%%' version='1.1' contents='%%_claimbody_updated%%' content_type='application/json' method='PATCH'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
+
       <transaction name="get_claim">
         <request subst="true">
-          <http url="%%_location%%" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="%%_location%%" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
+
       <transaction name="delete_claim">
         <request subst="true">
-          <http url="%%_location%%" method="DELETE" version="1.1" content_type='application/json'></http>
+          <http url="%%_location%%" method="DELETE" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
+
       <transaction name="delete_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="DELETE" version="1.1"></http>
+          <http url="/v1/queues/%%_qname%%" method="DELETE" version="1.1">
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
     </session>
+
 
   <!--
   Scenario-4 :
@@ -262,71 +357,111 @@
   8. Delete Queue-->
     <session name="Scenario-4" probability="30" type="ts_http">
       <setdynvars sourcetype="random_string" length="12">
-        <var name="qname" />
+        <var name="qname"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="message" delimiter=";" order="random">
-        <var name="msgbody" />
+        <var name="msgbody"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="metadata" delimiter=";" order="random">
-        <var name="qmetadata" />
+        <var name="qmetadata"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="claimdata" delimiter=";" order="random">
-        <var name="claimbody" />
+        <var name="claimbody"/>
       </setdynvars>
+      <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
+        <var name="%%_pid%%"/>
+      </setdynvars>
+
       <transaction name="create_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'></http>
-        </request>
-      </transaction>
-      <transaction name="post_message">
-        <request subst="true">
-          <http url='/v1/1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <http url="/v1/queues/%%_qname%%" method="PUT" version="1.1" contents='%%_qmetadata%%' content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
+
+      <transaction name="post_message">
+        <request subst="true">
+          <http url='/v1/queues/%%_qname%%/messages' version='1.1' contents='%%_msgbody%%' content_type='application/json' method='POST'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
+        </request>
+      </transaction>
+
       <transaction name="post_claim">
         <request subst="true">
           <!--Extract href from response body -->
-          <dyn_variable name="msgpath" jsonpath="[0].href" />
+          <dyn_variable name="msgpath" jsonpath="[0].href"/>
           <!--Extract location from response header -->
-          <dyn_variable name="location" re="Location: (.*)\r\n" />
-          <http url='/v1/1/queues/%%_qname%%/claims' version='1.1' contents='%%_claimbody%%' content_type='application/json' method='POST'>
-            <http_header name="User-Agent" value="Tsung-Agent" />
-            <http_header name="Client-ID" value="Tsung-Client" />
+          <dyn_variable name="location" re="Location: (.*)\r\n"/>
+          <http url='/v1/queues/%%_qname%%/claims' version='1.1' contents='%%_claimbody%%' content_type='application/json' method='POST'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
+
       <transaction name="delete_message">
         <request subst="true">
-          <http url="%%_msgpath%%" method="DELETE" version="1.1" content_type='application/json'></http>
+          <http url="%%_msgpath%%" method="DELETE" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
+
       <!--GET deleted message -->
       <transaction name="get_message">
         <request subst="true">
-          <http url="%%_msgpath%%" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="%%_msgpath%%" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
+
       <transaction name="delete_claim">
         <request subst="true">
           <http url="%%_location%%" method="DELETE" version="1.1" content_type='application/json'></http>
         </request>
       </transaction>
+
       <!--GET deleted claim -->
       <transaction name="get_claim">
         <request subst="true">
-          <http url="%%_location%%" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="%%_location%%" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <transaction name="delete_queue">
         <request subst="true">
-          <http url="/v1/1/queues/%%_qname%%" method="DELETE" version="1.1"></http>
+          <http url="/v1/queues/%%_qname%%" method="DELETE" version="1.1">
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
     </session>
+
 
   <!--
   Scenario-5 :
@@ -339,25 +474,45 @@
 
       <transaction name="list_10_queues">
         <request subst="true">
-          <http url="/v1/1/queues?detailed=true" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="/v1/queues?detailed=true" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <transaction name="list_100_queues">
         <request subst="true">
-          <http url="/v1/2/queues?detailed=true" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="/v1/queues?detailed=true" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <transaction name="list_1000_queues">
         <request subst="true">
-          <http url="/v1/3/queues?detailed=true" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="/v1/queues?detailed=true" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
       </transaction>
 
       <transaction name="list_10000_queues">
         <request subst="true">
-          <http url="/v1/4/queues?detailed=true" method="GET" version="1.1" content_type='application/json'></http>
+          <http url="/v1/queues?detailed=true" method="GET" version="1.1" content_type='application/json'>
+            <http_header name="User-Agent" value="Tsung-Agent"/>
+            <http_header name="Client-ID" value="Tsung-Client"/>
+            <http_header name="X-Auth-Token" value="XXXXX"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
+          </http>
         </request>
 
       </transaction>
