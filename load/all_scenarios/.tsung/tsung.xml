@@ -3,12 +3,12 @@
 <tsung loglevel="debug" dumptraffic="true" backend="fullstats" version="1.0">
   <!-- Client side setup -->
   <clients>
-    <client host="tsung-controller" use_controller_vm="true"/>
-    <client host="tsung-slave-1"/>
+    <client host="tsung-master" use_controller_vm="true"/>
+    <client host="tsung-worker-1"/>
   </clients>
   <!-- Server side setup -->
   <servers>
-    <server host="162.209.67.22" port="80" type="tcp"></server>
+    <server host="preview.queue.api.rackspacecloud.com" port="80" type="tcp"></server>
   </servers>
   <!-- to start os monitoring (cpu, network, memory). Use an erlang
   agent on the remote machine or SNMP. erlang is the default -->
@@ -57,7 +57,7 @@
       <setdynvars sourcetype="file" fileid="message" delimiter=";" order="random">
         <var name="msgbody"/>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="project_id"/>
+        <var name="%%_pid%%"/>
       </setdynvars>
 
       <!-- full url with server name, this overrides the "server" config value -->
@@ -67,7 +67,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -78,7 +78,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -89,7 +89,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -100,7 +100,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -111,7 +111,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
         </http>
         </request>
       </transaction>
@@ -123,7 +123,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -152,7 +152,7 @@
         <var name="qmetadata_updated"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="project_id"/>
+        <var name="%%_pid%%"/>
       </setdynvars>
 
       <transaction name="create_queue">
@@ -161,7 +161,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -172,7 +172,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -183,7 +183,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -194,7 +194,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -206,7 +206,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -240,7 +240,7 @@
         <var name="claimbody_updated"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="project_id"/>
+        <var name="%%_pid%%"/>
       </setdynvars>
 
       <transaction name="create_queue">
@@ -249,7 +249,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -260,7 +260,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -271,7 +271,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -286,7 +286,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -297,7 +297,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -308,7 +308,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -319,7 +319,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -330,7 +330,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -341,7 +341,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -369,7 +369,7 @@
         <var name="claimbody"/>
       </setdynvars>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="project_id"/>
+        <var name="%%_pid%%"/>
       </setdynvars>
 
       <transaction name="create_queue">
@@ -378,7 +378,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -389,7 +389,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -404,7 +404,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -415,7 +415,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -427,7 +427,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -445,7 +445,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -456,7 +456,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -478,7 +478,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -489,7 +489,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -500,7 +500,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
       </transaction>
@@ -511,7 +511,7 @@
             <http_header name="User-Agent" value="Tsung-Agent"/>
             <http_header name="Client-ID" value="Tsung-Client"/>
             <http_header name="X-Auth-Token" value="XXXXX"/>
-            <http_header name="X-Project-ID" value="project_id"/>
+            <http_header name="X-Project-ID" value="%%_pid%%"/>
           </http>
         </request>
 
