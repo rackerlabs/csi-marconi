@@ -1,7 +1,7 @@
 Load Tests
 ===========
 
-Marconi uses `Tsung`_(Tsung 1.5 or higher) to run load tests.
+Marconi uses `Tsung`_ (Tsung 1.5 or higher) to run load tests.
 
 Setting up the Load Generators
 ------------------------------
