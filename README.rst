@@ -1,8 +1,18 @@
+==========
 Load Tests
-===========
+==========
 
 Marconi uses `Tsung`_ (Tsung 1.5 or higher) to run load tests.
 
+**Table of Contents**
+
+.. contents::
+    :local:
+    :depth: 2
+    :backlinks: none
+
+
+------------------------------
 Setting up the Load Generators
 ------------------------------
 
@@ -20,6 +30,7 @@ Setting up the Load Generators
   * reboot.
   * Verify the change has taken place by 'umlimit –n'.
 
+----------------------------
 Installing Tsung from Source
 ----------------------------
 
@@ -36,6 +47,7 @@ Installing Tsung from Source
 #. make install
 
 
+---------------------------
 Steps to run the load tests
 ---------------------------
 
@@ -52,6 +64,7 @@ Steps to run the load tests
 #. Update ~/.tsung/projectid.csv, to include the tenant ID of your account. 
 #. Start tsung in the controller with 'tsung start'
 
+-----------------------
 Generating Test Reports
 -----------------------
 
@@ -62,6 +75,7 @@ Generating Test Reports
 #. Enjoy your performance reports!!
 
 
+==============
 Security Tests
 ==============
 
