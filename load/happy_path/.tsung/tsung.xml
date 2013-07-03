@@ -57,7 +57,7 @@
         <var name="msgbody" />
       </setdynvars>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="%%_pid%%"/>
+        <var name="pid"/>
       </setdynvars>
 
       <!-- full url with server name, this overrides the "server" config value -->
@@ -139,7 +139,7 @@
         <var name="qmetadata_updated" />
       </setdynvars>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="%%_pid%%"/>
+        <var name="pid"/>
       </setdynvars>
 
       <transaction name="create_queue">
@@ -214,7 +214,7 @@
         <var name="claimbody_updated" />
       </setdynvars>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="%%_pid%%"/>
+        <var name="pid"/>
       </setdynvars>
 
       <transaction name="create_queue">
@@ -341,7 +341,7 @@
         <var name="claimbody" />
       </setdynvars>
       <setdynvars sourcetype="file" fileid="projectid" delimiter=";" order="random">
-        <var name="%%_pid%%"/>
+        <var name="pid"/>
       </setdynvars>
 
       <transaction name="create_queue">

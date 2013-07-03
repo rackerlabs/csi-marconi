@@ -6,7 +6,7 @@ Marconi uses `Tsung`_ (Tsung 1.5 or higher) to run load tests.
 Setting up the Load Generators
 ------------------------------
 
-#. Install tsung in all the machines. (See Section Installing Tsung from Source).
+#. Install tsung in all the machines. (See Section: Installing Tsung from Source).
    One of the machines will be the controller, & the rest will be workers.
 #. Enable ssh connection with no passphrase, between all the machines.
 #. Update the /etc/hosts in all the machines, to point to the other tsung machines.
@@ -39,6 +39,7 @@ Installing Tsung from Source
 Steps to run the load tests
 ---------------------------
 
+#. Clone this git repo to your tsung controller.
 #. Copy the .tsung directory from load/*/.tsung to the home directory (~), of your tsung controller.
     * happy_path directory has load tests with only positive scenarios.
     * all_scenarios directory has tests with positive and negative scenarios
