@@ -17,15 +17,16 @@ Setting up the Load Generators
 ------------------------------
 
 #. Install tsung in all the machines. (See Section: Installing Tsung from Source).
-   One of the machines will be the controller, & the rest will be workers.
+   One of the machines will be the controller, & the rest will be clients.
 #. Enable ssh connection with no passphrase, between all the machines.
-#. Update the /etc/hosts in all the machines, to point to the other tsung machines.
+#. Update the /etc/hosts in all the machines. The controller:/etc/hosts should have entries pointing to all the clients, as well as itself.
+   All the clients, should have an entry for the controller in /etc/hosts. 
    (We want to avoid the overhead of a dns lookup.)
-#. Increase file descriptors available in all your machines.
-  Add the following to /etc/security/limits.conf::
+#. Increase file descriptors available, in all the tsung machines.
+   Add the following to /etc/security/limits.conf::
 
     root soft  nofile 9000
-    root hard  no file 65000
+    root hard  nofile 65000
 
   * reboot.
   * Verify the change has taken place by 'umlimit –n'.
@@ -52,7 +53,7 @@ Steps to run the load tests
 ---------------------------
 
 #. Clone this git repo to your tsung controller.
-#. Copy the .tsung directory from load/*/.tsung to the home directory (~), of your tsung controller.
+#. Copy the .tsung directory from load/*/.tsung to the home directory (~), on your tsung controller.
     * happy_path directory has load tests with only positive scenarios.
     * all_scenarios directory has tests with positive and negative scenarios
 #. Update the tsung.xml
@@ -63,6 +64,7 @@ Steps to run the load tests
       (This is intentionally manual, to avoid accidentally stressing the production auth.)
 
 #. Update ~/.tsung/projectid.csv, to include the tenant ID of your account. 
+#. Create queues with the names in ~/.tsung/existingqueue.csv, if your account doesn't have them already.
 #. Start tsung in the controller with 'tsung start'
 
 -----------------------

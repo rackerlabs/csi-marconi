@@ -3,17 +3,17 @@
 <tsung loglevel="debug" dumptraffic="true" backend="fullstats" version="1.0">
   <!-- Client side setup -->
   <clients>
-    <client host="tsung-master" use_controller_vm="true"/>
-    <client host="tsung-worker-1"/>
+    <client host="tsung-controller" use_controller_vm="true"/>
+    <client host="tsung-client-1"/>
   </clients>
   <!-- Server side setup -->
   <servers>
-    <server host="preview.queue.api.rackspacecloud.com" port="80" type="tcp"></server>
+    <server host="test-queue.drivesrvr-dev.com" port="443" type="ssl"></server>
   </servers>
   <!-- to start os monitoring (cpu, network, memory). Use an erlang
   agent on the remote machine or SNMP. erlang is the default -->
   <monitoring>
-    <monitor host="myserver" type="snmp"></monitor>
+    <monitor host="test-queue.drivesrvr-dev.com" type="snmp"></monitor>
   </monitoring>
   <load>
     <!-- several arrival phases can be set: for each phase, you can set
