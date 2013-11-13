@@ -18,7 +18,7 @@ Setting up the Load Generators
 
 #. Install tsung in all the machines. (See Section: Installing Tsung from Source).
    One of the machines will be the controller, & the rest will be clients.
-#. Enable ssh connection with no passphrase, between all the machines.
+#. Enable ssh connection with no passphrase, between the tsung controller and each of the clients.
 #. Update the /etc/hosts in all the machines. The controller:/etc/hosts should have entries pointing to all the clients, as well as itself.
    All the clients, should have an entry for the controller in /etc/hosts. 
    (We want to avoid the overhead of a dns lookup.)
