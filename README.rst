@@ -35,7 +35,7 @@ Setting up the Load Generators
 Installing Tsung from Source
 ----------------------------
 
-#. Create ubuntu 13.04 server
+#. Create ubuntu 12.10 server
 #. apt-get update
 #. apt-get install gnuplot-nox libtemplate-perl libhtml-template-perl libhtml-template-expr-perl 
 #. apt-get install gnuplot erlang make git autoconf
