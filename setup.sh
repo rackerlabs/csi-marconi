@@ -6,6 +6,9 @@ apt-get -y upgrade
 apt-get install -y gnuplot-nox libtemplate-perl libhtml-template-perl libhtml-template-expr-perl
 apt-get install -y gnuplot erlang make git autoconf python-pip
 pip install pyrax
+
+# install tsung
+cd ~
 wget http://tsung.erlang-projects.org/dist/tsung-1.5.1.tar.gz
 tar xvf tsung-1.5.1.tar.gz
 cd tsung-1.5.1
@@ -14,15 +17,16 @@ chmod 755 configure
 make
 make install
 
+# get tsung becnhmarking directory
 cd ~
-git clone https://github.com/rackerlabs/csi-marconi.git
+git clone https://github.com/obulpathi/csi-marconi.git
 cp -r csi-marconi/load ~/.tsung
 cp csi-marconi/pyrax.cfg ~/.pyrax.cfg
 cp csi-marconi/credentials.conf ~/.credentials.conf
 
 # update pyrax.cfg and credentials.conf
 sed -i "s/REGION/${REGION}/g" ~/.pyrax.cfg
-sed -i "s/USERNAME/${USERNAME}/g" ~/.credentials.conf
+sed -i "s/USERNAME/${MARCONI_USERNAME}/g" ~/.credentials.conf
 sed -i "s/PASSWORD/${PASSWORD}/g" ~/.credentials.conf
 sed -i "s/TENANT_ID/${TENANT_ID}/g" ~/.credentials.conf
 
