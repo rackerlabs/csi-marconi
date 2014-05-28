@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Create ubuntu 14.04 server
-apt-get update
-apt-get -y upgrade
+# apt-get update
+# apt-get -y upgrade
 apt-get install -y gnuplot-nox libtemplate-perl libhtml-template-perl libhtml-template-expr-perl
 apt-get install -y gnuplot erlang make git autoconf python-pip
 pip install pyrax
