@@ -2,11 +2,10 @@
 
 # Create ubuntu 14.04 server
 apt-get update
-# apt-get -y upgrade
+apt-get -y upgrade
 apt-get install -y gnuplot-nox libtemplate-perl libhtml-template-perl libhtml-template-expr-perl
-apt-get install -y gnuplot  make gcc git automake autoconf libtool build-essential python-pip
+apt-get install -y gnuplot  make gcc git automake autoconf libtool build-essential
 apt-get install -y m4 libncurses5-dev libssh-dev libssl-dev unixodbc-dev libgmp3-dev libwxgtk2.8-dev libglu1-mesa-dev fop xsltproc default-jdk
-pip install pyrax
 
 # install erlang
 cd ~
@@ -29,16 +28,7 @@ make install
 
 # get tsung becnhmarking directory
 cd ~
-git clone https://github.com/obulpathi/csi-marconi.git
 cp -r csi-marconi/load ~/.tsung
-cp csi-marconi/pyrax.cfg ~/.pyrax.cfg
-cp csi-marconi/credentials.conf ~/.credentials.conf
-
-# update pyrax.cfg and credentials.conf
-sed -i "s/REGION/${REGION}/g" ~/.pyrax.cfg
-sed -i "s/USERNAME/${MARCONI_USERNAME}/g" ~/.credentials.conf
-sed -i "s/PASSWORD/${PASSWORD}/g" ~/.credentials.conf
-sed -i "s/TENANT_ID/${TENANT_ID}/g" ~/.credentials.conf
 
 cd ~/.tsung/
 # Update the tsung.xml
