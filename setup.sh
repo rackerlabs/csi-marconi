@@ -1,17 +1,27 @@
 #!/usr/bin/env bash
 
 # Create ubuntu 14.04 server
-# apt-get update
+apt-get update
 # apt-get -y upgrade
 apt-get install -y gnuplot-nox libtemplate-perl libhtml-template-perl libhtml-template-expr-perl
-apt-get install -y gnuplot  make git autoconf python-pip
+apt-get install -y gnuplot  make gcc git automake autoconf libtool build-essential python-pip
+apt-get install -y m4 libncurses5-dev libssh-dev libssl-dev unixodbc-dev libgmp3-dev libwxgtk2.8-dev libglu1-mesa-dev fop xsltproc default-jdk
 pip install pyrax
+
+# install erlang
+cd ~
+wget http://www.erlang.org/download/otp_src_R15B01.tar.gz
+tar xvf otp_src_R15B01.tar.gz
+cd otp_src_R15B01
+./configure
+make
+make install
 
 # install tsung
 cd ~
-wget http://tsung.erlang-projects.org/dist/tsung-1.5.0.tar.gz
-tar xvf tsung-1.5.0.tar.gz
-cd tsung-1.5.0
+wget http://tsung.erlang-projects.org/dist/tsung-1.5.1.tar.gz
+tar xvf tsung-1.5.1.tar.gz
+cd tsung-1.5.1
 chmod 755 configure
 ./configure
 make
