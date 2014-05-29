@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Replace all auth tokens, with a valid auth token. (This is intentionally manual, to avoid accidentally stressing the production auth.)
+cd ~/.tsung/
+sed -i "s/.*;/${AUTH_TOKEN};/g" auth.csv
+
 # Create queues with the names in ~/.tsung/existingqueue.csv, if your account doesn't have them already.
 python create_queues.py
 

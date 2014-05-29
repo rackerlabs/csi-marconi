@@ -1,0 +1,3 @@
+export DATACENTER=dc
+export TENANT_ID=tenant_id
+export AUTH_TOKEN=auth_token

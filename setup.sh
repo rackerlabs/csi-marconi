@@ -36,11 +36,9 @@ cd ~/.tsung/
 # Update the <clients> section of ~/.tsung/tsung.xml, to point to your tsung machines. (Do not use IP addresses here.)
 # Update the <servers> section, to point to your marconi server.
 sed -i "s/DATACENTER/${DATACENTER}/g" tsung.xml
-# Replace all auth tokens, with a valid auth token. (This is intentionally manual, to avoid accidentally stressing the production auth.)
-sed -i "s/AUTH_TOKEN/${AUTH_TOKEN}/g" auth.csv
 sed -i "s/TENANT_ID/${TENANT_ID}/" auth.csv
 # Update ~/.tsung/projectid.csv, to include the tenant ID of your account.
-sed -i "s/PROJECT_ID/${PROJECT_ID}/g" projectid.csv
+sed -i "s/PROJECT_ID/${TENANT_ID}/g" projectid.csv
 
 # Increase file descriptors available.
 echo root soft  nofile 9000  >> /etc/security/limits.conf
