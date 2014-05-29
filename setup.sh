@@ -9,8 +9,8 @@ pip install pyrax
 
 # install tsung
 cd ~
-wget http://tsung.erlang-projects.org/dist/tsung-1.5.1.tar.gz
-tar xvf tsung-1.5.1.tar.gz
+wget http://tsung.erlang-projects.org/dist/tsung-1.5.0.tar.gz
+tar xvf tsung-1.5.0.tar.gz
 cd tsung-1.5.1
 chmod 755 configure
 ./configure
