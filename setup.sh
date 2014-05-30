@@ -4,8 +4,9 @@
 apt-get update
 apt-get -y upgrade
 apt-get install -y gnuplot-nox libtemplate-perl libhtml-template-perl libhtml-template-expr-perl
-apt-get install -y gnuplot  make gcc git automake autoconf libtool build-essential
+apt-get install -y gnuplot  make gcc git automake autoconf libtool build-essential python-pip
 apt-get install -y m4 libncurses5-dev libssh-dev libssl-dev unixodbc-dev libgmp3-dev libwxgtk2.8-dev libglu1-mesa-dev fop xsltproc default-jdk
+pip install pyrax
 
 # install erlang
 cd ~
@@ -35,7 +36,7 @@ cd ~/.tsung/
 # for a single node setup, skip the next step
 # Update the <clients> section of ~/.tsung/tsung.xml, to point to your tsung machines. (Do not use IP addresses here.)
 # Update the <servers> section, to point to your marconi server.
-sed -i "s/DATACENTER/${DATACENTER}/g" tsung.xml
+sed -i "s/REGION/${REGION}/g" tsung.xml
 sed -i "s/TENANT_ID/${TENANT_ID}/" auth.csv
 # Update ~/.tsung/projectid.csv, to include the tenant ID of your account.
 sed -i "s/PROJECT_ID/${TENANT_ID}/g" projectid.csv

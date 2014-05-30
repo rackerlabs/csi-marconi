@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 # Replace all auth tokens, with a valid auth token. (This is intentionally manual, to avoid accidentally stressing the production auth.)
-cd ~/.tsung/
-sed -i "s/.*;/${AUTH_TOKEN};/g" auth.csv
+sed -i "s/.*;/${AUTH_TOKEN};/g" ~/.tsung/auth.csv
 
 # Create queues with the names in ~/.tsung/existingqueue.csv, if your account doesn't have them already.
-python create_queues.py
+python ~/csi-marconi/create_queues.py ${REGION} ${TENANT_ID} ${AUTH_TOKEN}
 
 # create a temporary directory for tsung logs
 logs_dir=`mktemp -d --tmpdir=. -t logs_XXXXXX`

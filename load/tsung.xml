@@ -8,12 +8,12 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="DATACENTER.queues.api.rackspacecloud.com" port="443" type="ssl"></server>
+    <server host="REGION.queues.api.rackspacecloud.com" port="443" type="ssl"></server>
   </servers>
   <!-- to start os monitoring (cpu, network, memory). Use an erlang
   agent on the remote machine or SNMP. erlang is the default -->
   <monitoring>
-    <monitor host="DATACENTER.queues.api.rackspacecloud.com" type="snmp"></monitor>
+    <monitor host="REGION.queues.api.rackspacecloud.com" type="snmp"></monitor>
   </monitoring>
   <load>
     <!-- several arrival phases can be set: for each phase, you can set
