@@ -20,7 +20,7 @@ Setting up the load generator
 Steps to run the load tests and generate test reports
 -----------------------------------------------------
 
-#. Update ~/csi-marconi/tsungrc with valid authentication token
+#. Update ~/csi-marconi/tsungrc with valid AUTHENTICATION TOKEN
 #. bash ~/csi-marconi/benchmark.sh
 
 ---------------------------
