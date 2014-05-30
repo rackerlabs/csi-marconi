@@ -30,6 +30,7 @@ make install
 # get tsung becnhmarking directory
 cd ~
 cp -r csi-marconi/load ~/.tsung
+source ~/csi-marconi/tsungrc
 
 cd ~/.tsung/
 # Update the tsung.xml

@@ -9,20 +9,19 @@ Setting up the load generator
 -----------------------------
 
 #. Create ubuntu 13.10 server
-#. apt-get update && upgrade
-#. apt-get install git vim
+#. apt-get update
+#. apt-get install -y git vim
 #. git clone https://github.com/rackerlabs/csi-marconi.git 
-#. cd csi-marconi
-#. Update tsungrc with valid DATACENTER and TENANT_ID 
-#. bash setup.sh
+#. Update ~/csi-marconi/tsungrc with valid REGION and TENANT_ID 
+#. bash ~/csi-marconi/setup.sh
 #. reboot
 
 -----------------------------------------------------
 Steps to run the load tests and generate test reports
 -----------------------------------------------------
 
-#. Update tsungrc with valid authentication token
-#. bash benchmark.sh
+#. Update ~/csi-marconi/tsungrc with valid authentication token
+#. bash ~/csi-marconi/benchmark.sh
 
 ---------------------------
 To view performance reports

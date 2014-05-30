@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# update auth token 
+source ~/csi-marconi/tsungrc
+
 # Replace all auth tokens, with a valid auth token. (This is intentionally manual, to avoid accidentally stressing the production auth.)
 sed -i "s/.*;/${AUTH_TOKEN};/g" ~/.tsung/auth.csv
 
