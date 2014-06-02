@@ -7,7 +7,7 @@ source ~/csi-marconi/tsungrc
 sed -i "s/.*;/${AUTH_TOKEN};/g" ~/.tsung/auth.csv
 
 # Create queues with the names in ~/.tsung/existingqueue.csv, if your account doesn't have them already.
-python ~/csi-marconi/create_queues.py ${REGION} ${TENANT_ID} ${AUTH_TOKEN}
+python ~/csi-marconi/create_queues.py ${TENANT_ID} ${AUTH_TOKEN}
 
 # create a temporary directory for tsung logs
 logs_dir=`mktemp -d --tmpdir=. -t logs_XXXXXX`

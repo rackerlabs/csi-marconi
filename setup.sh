@@ -27,20 +27,22 @@ chmod 755 configure
 make
 make install
 
-# get tsung becnhmarking directory
+# source required shell variables
 cd ~
 cp -r csi-marconi/load ~/.tsung
+cp csi-marconi/pyrax.cfg ~/.pyrax.cfg
 source ~/csi-marconi/tsungrc
 
-cd ~/.tsung/
 # Update the tsung.xml
-# for a single node setup, skip the next step
+# for a single node setup, skip the two commented steps below
 # Update the <clients> section of ~/.tsung/tsung.xml, to point to your tsung machines. (Do not use IP addresses here.)
 # Update the <servers> section, to point to your marconi server.
-sed -i "s/REGION/${REGION}/g" tsung.xml
-sed -i "s/TENANT_ID/${TENANT_ID}/" auth.csv
+sed -i "s/REGION/${REGION}/g" ~/.tsung/tsung.xml
+sed -i "s/TENANT_ID/${TENANT_ID}/" ~/.tsung/auth.csv
 # Update ~/.tsung/projectid.csv, to include the tenant ID of your account.
-sed -i "s/PROJECT_ID/${TENANT_ID}/g" projectid.csv
+sed -i "s/PROJECT_ID/${TENANT_ID}/g" ~/.tsung/projectid.csv
+# update REGION in .pyrax.cfg file
+sed -i "s/REGION/${REGION}/g" ~/.pyrax.cfg
 
 # Increase file descriptors available.
 echo root soft  nofile 9000  >> /etc/security/limits.conf
